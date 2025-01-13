@@ -1,136 +1,132 @@
-# EODHD Fundamentals Helper
+### README.md
 
-A Python-based toolkit for interacting with the EODHD API to fetch, organize, and analyze fundamental financial data. This repository includes utilities to retrieve exchange symbols, download fundamental data, and generate structured outputs for analysis or presentation.
+```markdown
+# Stock Market Data Fetcher
 
-## Features
+In order to create a quantitative investment strategy based on fundamental data, you need to have a robust local repository of data. This program downloads all stock, ETF, and mutual fund data from the [EODHD API](https://eodhistoricaldata.com/) and saves it as Parquet files for efficient storage and access. Additionally, the program generates HTML reports for analysis and provides examples demonstrating how to access various fields within the JSON files.
 
-- **Fetch Fundamental Data**: Download and save company fundamental data using EODHD's API.
-- **Exchange Symbol Management**: Retrieve and manage symbols for different exchanges.
-- **Generate HTML Reports**: Convert downloaded data into readable and interactive HTML reports.
-- **Automate Workflows**: Scripts are designed for seamless integration into larger automation pipelines.
-- **Advanced Tools**: Includes additional utilities for ETF data processing, market cap analysis, and JSON inspection.
-
-## Prerequisites
-
-1. Python 3.8 or higher.
-2. A valid EODHD API key.
-3. Install required Python packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Add your EODHD API key to a `.env` file:
-
-```
-EODHD_API_KEY=your_api_key_here
-```
+## Table of Contents
+- [Installation](#installation)
+- [Environment Setup](#environment-setup)
+- [Scripts Overview](#scripts-overview)
+- [Usage](#usage)
+  - [Get Exchange Symbols](#get-exchange-symbols)
+  - [Fetch Fundamental Data](#fetch-fundamental-data)
+  - [List Unique Exchanges](#list-unique-exchanges)
+  - [Generate HTML Reports](#generate-html-reports)
+  - [Analyze JSON Files](#analyze-json-files)
+  - [ETF Data to CSV](#etf-data-to-csv)
+  - [Market Cap Categories](#market-cap-categories)
+- [Logging](#logging)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/JeremyWhittaker/eodhd-fundamental-data-tools.git
-cd eodhd-fundamental-data-tools
-```
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/yourusername/stock-market-data-fetcher.git
+    cd stock-market-data-fetcher
+    ```
 
 2. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
+## Environment Setup
+
+Create a `.env` file at the root directory and set the API key for EODHD:
 ```bash
-pip install -r requirements.txt
+EODHD_API_KEY=your_api_key_here
 ```
 
-3. Set up the directory structure for data:
+## Scripts Overview
 
-```bash
-mkdir -p data/exchanges
-mkdir -p data/fundamental_data
-```
+1. `get_symbols_from_exchange.py`: Fetches exchange symbols from the EODHD API and saves them as JSON files for each exchange.
+2. `get_fundamental_data.py`: Downloads and saves fundamental data for all assets (stocks, ETFs, mutual funds) as Parquet files for efficient storage and analysis.
+3. `get_unique_exchanges.py`: Lists all unique exchanges available in the JSON files for a specific country.
+4. `generate_html.py`: Generates detailed HTML reports from the saved JSON data, including plots and tables for easy exploration.
+5. `analyze_json.py`: Analyzes the structure of JSON files, detecting patterns, data types, and repetitive keys.
+6. `etf_data_to_csv.py`: Converts ETF JSON data into CSV format, with peer comparisons based on holdings overlap.
+7. `generate_market_cap_categories.py`: Generates market cap categories (e.g., nano, micro, mega) based on market capitalization values and saves results as CSV files.
+8. `get_market_cap.py`: Extracts and saves market cap data for assets from JSON files and provides options to categorize assets by market cap.
 
 ## Usage
 
-### Fetch Symbols for Exchanges
-
+### Get Exchange Symbols
+To fetch symbols for all exchanges:
 ```bash
 python get_symbols_from_exchange.py
 ```
 
-This script retrieves symbols for all exchanges and saves them as JSON files in the `data/exchanges` directory.
+### Fetch Fundamental Data
+To download and save fundamental data for a specific country and exchange:
+```bash
+python get_fundamental_data.py --country US --exchange NASDAQ --output_dir ./data/fundamental_data --days 7
+```
 
 ### List Unique Exchanges
-
+To list all unique exchanges for a given country:
 ```bash
 python get_unique_exchanges.py --country US
 ```
 
-Lists all unique exchanges for the specified country code.
-
-### Fetch Fundamental Data
-
-```bash
-python get_fundamental_data.py --country US --exchange NYSE --days 7
-```
-
-This command fetches fundamental data for symbols from the NYSE and saves them in `data/fundamental_data`.
-
 ### Generate HTML Reports
-
+To generate an HTML report for a specific stock:
 ```bash
-python generate_html.py --rss data/fundamental_data/aapl.us.json
+python generate_html.py --symbol AAPL --data-dir ./data/fundamental_data --output-dir ./html
 ```
 
-Converts the JSON data of a specific company (e.g., `aapl.us.json`) into an interactive HTML report.
-
-### Process ETF Data
-
+### Analyze JSON Files
+To analyze the structure of a specific JSON file:
 ```bash
-python tools/etf_data_to_csv.py --json-dir data/fundamental_data --output-csv data/etfs.csv
+python analyze_json.py --json-path ./data/fundamental_data/aapl.json --max-depth 4
 ```
 
-Parses ETF JSON files to create a CSV file containing ETF data and peer relationships.
-
-### Categorize Market Capitalizations
-
+### ETF Data to CSV
+To convert ETF data to CSV format and calculate peer overlaps:
 ```bash
-python tools/generate_market_cap_categories.py --data_dir data/fundamental_data --output_dir data/market_cap_categories
+python etf_data_to_csv.py --json-dir ./data/fundamental_data --output-csv ./data/etfs.csv --peers 85.0
 ```
 
-Categorizes stocks into market cap groups (e.g., nano, micro, small) and saves the results to CSV files.
-
-### Inspect JSON Files
-
+### Market Cap Categories
+To generate CSV files with categorized market caps:
 ```bash
-python tools/analyze_json.py --json-path data/fundamental_data/aapl.us.json
+python generate_market_cap_categories.py --data_dir ./data/fundamental_data --output_dir ./market_cap_categories
 ```
 
-Logs the structure and key details of a JSON file for debugging and analysis.
+To list market cap data and categorize it:
+```bash
+python get_market_cap.py --data-dir ./data/fundamental_data --output-csv ./data/market_caps.csv
+```
 
-## File Overview
+## Logging
+- Logs are saved to `exchange_symbols.log` and other log files as needed.
+- You can monitor the log to check details about processed exchanges and error messages.
 
-- **`get_symbols_from_exchange.py`**: Retrieves and saves exchange symbols.
-- **`get_unique_exchanges.py`**: Lists unique exchanges for a specified country.
-- **`get_fundamental_data.py`**: Downloads fundamental data for symbols.
-- **`generate_html.py`**: Generates HTML reports from fundamental data.
-
-### Tools Subfolder
-
-The `tools/` directory contains additional utilities for advanced data processing:
-
-- **`etf_data_to_csv.py`**: Parses ETF data and creates CSV files, including peer overlap analysis.
-- **`generate_market_cap_categories.py`**: Categorizes stocks into market cap groups and saves results to CSV.
-- **`analyze_json.py`**: Inspects and logs the structure of JSON files for debugging.
-- **`get_market_cap.py`**: Extracts market caps from JSON data and saves to CSV.
-- **`get_market_caps.py`**: Processes market caps across multiple files.
-
-## Contribution
-
-Contributions are welcome! Please submit a pull request or raise an issue for any enhancements or bug fixes.
+## Contributing
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch-name`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch-name`).
+5. Create a pull request.
 
 ## License
+This project is licensed under the MIT License. See `LICENSE` for more details.
+```
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+### requirements.txt
 
-## Acknowledgments
+```plaintext
+requests
+python-dotenv
+tqdm
+argparse
+logging
+json
+datetime
+pathlib
+plotly
+```
 
-Special thanks to [EODHD](https://eodhd.com) for providing the API for financial data.
