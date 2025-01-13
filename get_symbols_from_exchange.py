@@ -4,6 +4,7 @@ import json
 import logging
 from pathlib import Path
 from datetime import datetime
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -16,7 +17,7 @@ logging.basicConfig(
 )
 
 # Constants
-API_KEY = "642120408239a3.45514891"  # Replace with your EODHD API key
+API_KEY = os.getenv("EODHD_API_KEY")
 BASE_URL = "https://eodhd.com/api"
 DATA_DIR = Path("./data/exchanges")
 DATA_DIR.mkdir(parents=True, exist_ok=True)

@@ -1,4 +1,8 @@
-plotly
 requests
-tqdm
 python-dotenv
+tqdm
+argparse
+logging
+json
+datetime
+pathlib
