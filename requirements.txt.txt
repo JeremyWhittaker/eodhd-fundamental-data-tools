@@ -1,0 +1,4 @@
+plotly
+requests
+tqdm
+python-dotenv
