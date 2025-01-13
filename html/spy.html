@@ -1,0 +1,251 @@
+<html><head>
+    <style>
+        /* Basic Styles */
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+            width: 100%;
+        }
+        dl {
+            margin: 0 0 10px 0;
+            padding: 0;
+        }
+        dt, dd {
+            display: inline-block;
+            margin: 0;
+            padding: 2px;
+            vertical-align: top;
+        }
+        dt {
+            font-weight: bold;
+        }
+        dd {
+            margin-left: 5px;
+        }
+
+        /* Main Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active, .tab:hover {
+            background-color: #ddd;
+        }
+        .content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #fff;
+            margin-top: -1px;
+        }
+        .content.active {
+            display: block;
+        }
+
+        /* Nested Tabs (Financials, ETF, etc.) */
+        .nested-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-top: 20px;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .nested-tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #e6e6e6;
+            margin-right: 5px;
+            font-size: 0.9em;
+            border-radius: 5px 5px 0 0;
+        }
+        .nested-tab.active, .nested-tab:hover {
+            background-color: #ccc;
+        }
+        .nested-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #f9f9f9;
+            margin-top: -1px;
+        }
+        .nested-content.active {
+            display: block;
+        }
+
+        /* Nested Tabs Second Level (Quarterly and Yearly) */
+        .nested-tabs-second-level {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-top: 10px;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .nested-tab-second-level {
+            padding: 6px 12px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #d9d9d9;
+            margin-right: 5px;
+            font-size: 0.8em;
+            border-radius: 5px 5px 0 0;
+        }
+        .nested-tab-second-level.active, .nested-tab-second-level:hover {
+            background-color: #b3b3b3;
+        }
+        .nested-content-second-level {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #f0f0f0;
+            margin-top: -1px;
+        }
+        .nested-content-second-level.active {
+            display: block;
+        }
+
+        /* Dropdown Content */
+        .dropdown-content {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .dropdown-content.active {
+            display: block;
+        }
+
+        /* Headings */
+        h4 {
+            margin-bottom: 0.3em;
+            margin-top: 1em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Select Dropdown */
+        select {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        /* Financial Dropdowns */
+        .financial-dropdown {
+            margin-bottom: 20px;
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupTabs(tabSelector, contentSelector) {
+                const tabs = document.querySelectorAll(tabSelector);
+                const contents = document.querySelectorAll(contentSelector);
+
+                tabs.forEach((tab, index) => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+                        tab.classList.add('active');
+                        contents[index].classList.add('active');
+                    });
+                });
+
+                if (tabs.length > 0) {
+                    tabs[0].classList.add('active');
+                    contents[0].classList.add('active');
+                }
+            }
+
+            function setupNestedTabs(tabSelector, contentSelector) {
+                const tabs = document.querySelectorAll(tabSelector);
+                const contents = document.querySelectorAll(contentSelector);
+
+                tabs.forEach((tab, index) => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+                        tab.classList.add('active');
+                        contents[index].classList.add('active');
+                    });
+                });
+
+                if (tabs.length > 0) {
+                    tabs[0].classList.add('active');
+                    contents[0].classList.add('active');
+                }
+            }
+
+            function setupDropdown(dropdownId, contentPrefix) {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) {
+                    return;
+                }
+
+                dropdown.addEventListener('change', function () {
+                    const selectedValue = this.value;
+                    const allContents = document.querySelectorAll(`.dropdown-content`);
+                    allContents.forEach(content => {
+                        if (content.id === `${contentPrefix}_${selectedValue}`) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            setupTabs('.tab', '.content');
+            setupTabs('.nested-tab', '.nested-content');
+            setupNestedTabs('.nested-tab-second-level', '.nested-content-second-level');
+
+            const financialSections = ['balance_sheet', 'cash_flow', 'income_statement'];
+            financialSections.forEach(section => {
+                const quarterlyDropdownId = `${section}_quarterly_dropdown`;
+                const yearlyDropdownId = `${section}_yearly_dropdown`;
+                setupDropdown(quarterlyDropdownId, `${section}_quarterly`);
+                setupDropdown(yearlyDropdownId, `${section}_yearly`);
+            });
+
+            setupDropdown('earnings-dropdown', 'earnings');
+        });
+    </script>
+    </head><body><div class="tabs"><div class="tab">General</div><div class="tab">Technicals</div><div class="tab">ETF_Data</div></div><div class='content'><dl><dt>Code:</dt><dd>SPY</dd><br><dt>Type:</dt><dd>ETF</dd><br><dt>Name:</dt><dd>SPDR S&P 500 ETF Trust</dd><br><dt>Exchange:</dt><dd>NYSE ARCA</dd><br><dt>CurrencyCode:</dt><dd>USD</dd><br><dt>CurrencyName:</dt><dd>US Dollar</dd><br><dt>CurrencySymbol:</dt><dd>$</dd><br><dt>CountryName:</dt><dd>USA</dd><br><dt>CountryISO:</dt><dd>US</dd><br><dt>OpenFigi:</dt><dd>BBG000BDTBL9</dd><br><dt>Description:</dt><dd>The Trust seeks to achieve its investment objective by holding a portfolio of the common stocks that are included in the index (the "Portfolio"), with the weight of each stock in the Portfolio substantially corresponding to the weight of such stock in the index.</dd><br><dt>Category:</dt><dd>Large Blend</dd><br><dt>UpdatedAt:</dt><dd>2024-12-28</dd><br></dl></div><div class='content'><dl><dt>Beta:</dt><dd>1</dd><br><dt>52WeekHigh:</dt><dd>607.0274</dd><br><dt>52WeekLow:</dt><dd>460.5232</dd><br><dt>50DayMA:</dt><dd>592.4166</dd><br><dt>200DayMA:</dt><dd>552.7911</dd><br></dl></div><div class='content'><div class="nested-tabs"><div class="nested-tab">Main</div><div class="nested-tab">Market Capitalization</div><div class="nested-tab">Asset Allocation</div><div class="nested-tab">World Regions</div><div class="nested-tab">Sector Weights</div><div class="nested-tab">Fixed Income</div><div class="nested-tab">Holdings Count</div><div class="nested-tab">Top 10 Holdings</div><div class="nested-tab">All Holdings</div><div class="nested-tab">Valuations & Growth</div><div class="nested-tab">MorningStar</div><div class="nested-tab">Performance</div></div><div class='nested-content'><dl><dt>ISIN:</dt><dd>US78462F1030</dd><br><dt>Company_Name:</dt><dd>State Street</dd><br><dt>Company_URL:</dt><dd>http://www.spdrs.com</dd><br><dt>ETF_URL:</dt><dd>https://us.spdrs.com/en/product/fund.seam?ticker=SPY</dd><br><dt>Domicile:</dt><dd>United States</dd><br><dt>Index_Name:</dt><dd>S&P 500 Index	</dd><br><dt>Yield:</dt><dd>1.160000</dd><br><dt>Dividend_Paying_Frequency:</dt><dd>Quarterly</dd><br><dt>Inception_Date:</dt><dd>1993-01-22</dd><br><dt>Max_Annual_Mgmt_Charge:</dt><dd>None</dd><br><dt>Ongoing_Charge:</dt><dd>None</dd><br><dt>Date_Ongoing_Charge:</dt><dd>None</dd><br><dt>NetExpenseRatio:</dt><dd>0.00095</dd><br><dt>AnnualHoldingsTurnover:</dt><dd>0.02000</dd><br><dt>TotalAssets:</dt><dd>636,254,851,935</dd><br><dt>Average_Mkt_Cap_Mil:</dt><dd>375,920.20167</dd><br></dl></div><div class='nested-content'><dl><dt>Mega:</dt><dd>49.52283</dd><br><dt>Big:</dt><dd>32.88121</dd><br><dt>Medium:</dt><dd>16.87265</dd><br><dt>Small:</dt><dd>0.43161</dd><br><dt>Micro:</dt><dd>0</dd><br></dl></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Long_%</th><th>Short_%</th><th>Net_Assets_%</th><th>Name</th></tr></thead><tbody><tr><td>0.29169</td><td>0</td><td>0.29169</td><td>Cash</td></tr><tr><td>0</td><td>0</td><td>0</td><td>NotClassified</td></tr><tr><td>0.55091</td><td>0</td><td>0.55091</td><td>Stock non-US</td></tr><tr><td>0</td><td>0</td><td>0</td><td>Other</td></tr><tr><td>99.1574</td><td>0</td><td>99.1574</td><td>Stock US</td></tr><tr><td>0</td><td>0</td><td>0</td><td>Bond</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Equity_%</th><th>Relative_to_Category</th><th>Name</th></tr></thead><tbody><tr><td>99.447</td><td>98.055</td><td>North America</td></tr><tr><td>0.08944</td><td>0.46707</td><td>United Kingdom</td></tr><tr><td>0.426</td><td>1.058</td><td>Europe Developed</td></tr><tr><td>0</td><td>0</td><td>Europe Emerging</td></tr><tr><td>0</td><td>0.03</td><td>Africa/Middle East</td></tr><tr><td>0</td><td>0.069</td><td>Japan</td></tr><tr><td>0</td><td>0.002</td><td>Australasia</td></tr><tr><td>0.036</td><td>0.216</td><td>Asia Developed</td></tr><tr><td>0</td><td>0.039</td><td>Asia Emerging</td></tr><tr><td>0</td><td>0.063</td><td>Latin America</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Equity_%</th><th>Relative_to_Category</th><th>Name</th></tr></thead><tbody><tr><td>1.65497</td><td>2.4284</td><td>Basic Materials</td></tr><tr><td>11.63052</td><td>10.15788</td><td>Consumer Cyclicals</td></tr><tr><td>13.02297</td><td>13.66022</td><td>Financial Services</td></tr><tr><td>2.05758</td><td>1.98763</td><td>Real Estate</td></tr><tr><td>9.39336</td><td>8.40785</td><td>Communication Services</td></tr><tr><td>3.04437</td><td>3.35495</td><td>Energy</td></tr><tr><td>7.21061</td><td>9.64499</td><td>Industrials</td></tr><tr><td>34.05406</td><td>30.01407</td><td>Technology</td></tr><tr><td>5.46883</td><td>5.78434</td><td>Consumer Defensive</td></tr><tr><td>9.9928</td><td>12.02091</td><td>Healthcare</td></tr><tr><td>2.46993</td><td>2.53876</td><td>Utilities</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Relative_to_Category</th><th>Name</th><th>Fund_%</th></tr></thead><tbody><tr><td>-0.20874</td><td>EffectiveDuration</td><td>0</td></tr><tr><td>-0.51922</td><td>ModifiedDuration</td><td>0</td></tr><tr><td>2.21813</td><td>EffectiveMaturity</td><td>0</td></tr><tr><td>0</td><td>CreditQuality</td><td>0</td></tr><tr><td>0</td><td>Coupon</td><td>0</td></tr><tr><td>0</td><td>Price</td><td>0</td></tr><tr><td>3.50068</td><td>YieldToMaturity</td><td>0</td></tr></tbody></table></div><div class='nested-content'><dl><dt>Holdings_Count:</dt><dd>98</dd><br></dl></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Industry</th><th>Assets_%</th><th>Region</th><th>Sector</th><th>Name</th><th>Country</th><th>Exchange</th><th>Code</th></tr></thead><tbody><tr><td>Consumer Electronics</td><td>7.61008</td><td>North America</td><td>Technology</td><td>Apple Inc</td><td>United States</td><td>US</td><td>AAPL</td></tr><tr><td>Semiconductors</td><td>6.70669</td><td>North America</td><td>Technology</td><td>NVIDIA Corporation</td><td>United States</td><td>US</td><td>NVDA</td></tr><tr><td>Software - Infrastructure</td><td>6.36891</td><td>North America</td><td>Technology</td><td>Microsoft Corporation</td><td>United States</td><td>US</td><td>MSFT</td></tr><tr><td>Internet Retail</td><td>4.17955</td><td>North America</td><td>Consumer Cyclical</td><td>Amazon.com Inc</td><td>United States</td><td>US</td><td>AMZN</td></tr><tr><td>Internet Content & Information</td><td>2.58333</td><td>North America</td><td>Communication Services</td><td>Meta Platforms Inc.</td><td>United States</td><td>US</td><td>META</td></tr><tr><td>Auto Manufacturers</td><td>2.51733</td><td>North America</td><td>Consumer Cyclical</td><td>Tesla Inc</td><td>United States</td><td>US</td><td>TSLA</td></tr><tr><td>Internet Content & Information</td><td>2.23428</td><td>North America</td><td>Communication Services</td><td>Alphabet Inc Class A</td><td>United States</td><td>US</td><td>GOOGL</td></tr><tr><td>Semiconductors</td><td>2.18274</td><td>North America</td><td>Technology</td><td>Broadcom Inc</td><td>United States</td><td>US</td><td>AVGO</td></tr><tr><td>Internet Content & Information</td><td>1.8334</td><td>North America</td><td>Communication Services</td><td>Alphabet Inc Class C</td><td>United States</td><td>US</td><td>GOOG</td></tr><tr><td>Insurance - Diversified</td><td>1.63923</td><td>North America</td><td>Financial Services</td><td>Berkshire Hathaway Inc</td><td>United States</td><td>US</td><td>BRK-B</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Industry</th><th>Assets_%</th><th>Region</th><th>Sector</th><th>Name</th><th>Country</th><th>Exchange</th><th>Code</th></tr></thead><tbody><tr><td>Consumer Electronics</td><td>7.61008</td><td>North America</td><td>Technology</td><td>Apple Inc</td><td>United States</td><td>US</td><td>AAPL</td></tr><tr><td>Semiconductors</td><td>6.70669</td><td>North America</td><td>Technology</td><td>NVIDIA Corporation</td><td>United States</td><td>US</td><td>NVDA</td></tr><tr><td>Software - Infrastructure</td><td>6.36891</td><td>North America</td><td>Technology</td><td>Microsoft Corporation</td><td>United States</td><td>US</td><td>MSFT</td></tr><tr><td>Internet Retail</td><td>4.17955</td><td>North America</td><td>Consumer Cyclical</td><td>Amazon.com Inc</td><td>United States</td><td>US</td><td>AMZN</td></tr><tr><td>Internet Content & Information</td><td>2.58333</td><td>North America</td><td>Communication Services</td><td>Meta Platforms Inc.</td><td>United States</td><td>US</td><td>META</td></tr><tr><td>Auto Manufacturers</td><td>2.51733</td><td>North America</td><td>Consumer Cyclical</td><td>Tesla Inc</td><td>United States</td><td>US</td><td>TSLA</td></tr><tr><td>Internet Content & Information</td><td>2.23428</td><td>North America</td><td>Communication Services</td><td>Alphabet Inc Class A</td><td>United States</td><td>US</td><td>GOOGL</td></tr><tr><td>Semiconductors</td><td>2.18274</td><td>North America</td><td>Technology</td><td>Broadcom Inc</td><td>United States</td><td>US</td><td>AVGO</td></tr><tr><td>Internet Content & Information</td><td>1.8334</td><td>North America</td><td>Communication Services</td><td>Alphabet Inc Class C</td><td>United States</td><td>US</td><td>GOOG</td></tr><tr><td>Insurance - Diversified</td><td>1.63923</td><td>North America</td><td>Financial Services</td><td>Berkshire Hathaway Inc</td><td>United States</td><td>US</td><td>BRK-B</td></tr><tr><td>Banks - Diversified</td><td>1.33016</td><td>North America</td><td>Financial Services</td><td>JPMorgan Chase & Co</td><td>United States</td><td>US</td><td>JPM</td></tr><tr><td>Drug Manufacturers - General</td><td>1.22239</td><td>North America</td><td>Healthcare</td><td>Eli Lilly and Company</td><td>United States</td><td>US</td><td>LLY</td></tr><tr><td>Credit Services</td><td>1.08043</td><td>North America</td><td>Financial Services</td><td>Visa Inc. Class A</td><td>United States</td><td>US</td><td>V</td></tr><tr><td>Oil & Gas Integrated</td><td>0.91182</td><td>North America</td><td>Energy</td><td>Exxon Mobil Corp</td><td>United States</td><td>US</td><td>XOM</td></tr><tr><td>Healthcare Plans</td><td>0.90814</td><td>North America</td><td>Healthcare</td><td>UnitedHealth Group Incorporated</td><td>United States</td><td>US</td><td>UNH</td></tr><tr><td>Credit Services</td><td>0.85621</td><td>North America</td><td>Financial Services</td><td>Mastercard Inc</td><td>United States</td><td>US</td><td>MA</td></tr><tr><td>Discount Stores</td><td>0.82838</td><td>North America</td><td>Consumer Defensive</td><td>Costco Wholesale Corp</td><td>United States</td><td>US</td><td>COST</td></tr><tr><td>Discount Stores</td><td>0.78441</td><td>North America</td><td>Consumer Defensive</td><td>Walmart Inc</td><td>United States</td><td>US</td><td>WMT</td></tr><tr><td>Entertainment</td><td>0.77686</td><td>North America</td><td>Communication Services</td><td>Netflix Inc</td><td>United States</td><td>US</td><td>NFLX</td></tr><tr><td>Household & Personal Products</td><td>0.77576</td><td>North America</td><td>Consumer Defensive</td><td>Procter & Gamble Company</td><td>United States</td><td>US</td><td>PG</td></tr><tr><td>Home Improvement Retail</td><td>0.76722</td><td>North America</td><td>Consumer Cyclical</td><td>Home Depot Inc</td><td>United States</td><td>US</td><td>HD</td></tr><tr><td>Drug Manufacturers - General</td><td>0.68469</td><td>North America</td><td>Healthcare</td><td>Johnson & Johnson</td><td>United States</td><td>US</td><td>JNJ</td></tr><tr><td>Software - Application</td><td>0.64202</td><td>North America</td><td>Technology</td><td>Salesforce.com Inc</td><td>United States</td><td>US</td><td>CRM</td></tr><tr><td>Drug Manufacturers - General</td><td>0.62021</td><td>North America</td><td>Healthcare</td><td>AbbVie Inc</td><td>United States</td><td>US</td><td>ABBV</td></tr><tr><td>Banks - Diversified</td><td>0.57765</td><td>North America</td><td>Financial Services</td><td>Bank of America Corp</td><td>United States</td><td>US</td><td>BAC</td></tr><tr><td>Software - Infrastructure</td><td>0.53716</td><td>North America</td><td>Technology</td><td>Oracle Corporation</td><td>United States</td><td>US</td><td>ORCL</td></tr><tr><td>Drug Manufacturers - General</td><td>0.49053</td><td>North America</td><td>Healthcare</td><td>Merck & Company Inc</td><td>United States</td><td>US</td><td>MRK</td></tr><tr><td>Beverages - Non-Alcoholic</td><td>0.47504</td><td>North America</td><td>Consumer Defensive</td><td>The Coca-Cola Company</td><td>United States</td><td>US</td><td>KO</td></tr><tr><td>Oil & Gas Integrated</td><td>0.46874</td><td>North America</td><td>Energy</td><td>Chevron Corp</td><td>United States</td><td>US</td><td>CVX</td></tr><tr><td>Communication Equipment</td><td>0.46517</td><td>North America</td><td>Technology</td><td>Cisco Systems Inc</td><td>United States</td><td>US</td><td>CSCO</td></tr><tr><td>Banks - Diversified</td><td>0.46476</td><td>North America</td><td>Financial Services</td><td>Wells Fargo & Company</td><td>United States</td><td>US</td><td>WFC</td></tr><tr><td>Software - Application</td><td>0.44405</td><td>North America</td><td>Technology</td><td>ServiceNow Inc</td><td>United States</td><td>US</td><td>NOW</td></tr><tr><td>Information Technology Services</td><td>0.44062</td><td>North America</td><td>Technology</td><td>Accenture plc</td><td>United States</td><td>US</td><td>ACN</td></tr><tr><td>Restaurants</td><td>0.41081</td><td>North America</td><td>Consumer Cyclical</td><td>McDonald’s Corporation</td><td>United States</td><td>US</td><td>MCD</td></tr><tr><td>Beverages - Non-Alcoholic</td><td>0.40879</td><td>North America</td><td>Consumer Defensive</td><td>PepsiCo Inc</td><td>United States</td><td>US</td><td>PEP</td></tr><tr><td>Information Technology Services</td><td>0.4046</td><td>North America</td><td>Technology</td><td>International Business Machines</td><td>United States</td><td>US</td><td>IBM</td></tr><tr><td>Semiconductors</td><td>0.39962</td><td>North America</td><td>Technology</td><td>Advanced Micro Devices Inc</td><td>United States</td><td>US</td><td>AMD</td></tr><tr><td>Entertainment</td><td>0.39745</td><td>North America</td><td>Communication Services</td><td>Walt Disney Company</td><td>United States</td><td>US</td><td>DIS</td></tr><tr><td>Specialty Chemicals</td><td>0.39529</td><td>North America</td><td>Basic Materials</td><td>Linde plc Ordinary Shares</td><td>United States</td><td>US</td><td>LIN</td></tr><tr><td>Diagnostics & Research</td><td>0.39452</td><td>North America</td><td>Healthcare</td><td>Thermo Fisher Scientific Inc</td><td>United States</td><td>US</td><td>TMO</td></tr><tr><td>Medical Devices</td><td>0.38811</td><td>North America</td><td>Healthcare</td><td>Abbott Laboratories</td><td>United States</td><td>US</td><td>ABT</td></tr><tr><td>Software - Infrastructure</td><td>0.38448</td><td>North America</td><td>Technology</td><td>Adobe Systems Incorporated</td><td>United States</td><td>US</td><td>ADBE</td></tr><tr><td>Medical Instruments & Supplies</td><td>0.37292</td><td>North America</td><td>Healthcare</td><td>Intuitive Surgical Inc</td><td>United States</td><td>US</td><td>ISRG</td></tr><tr><td>Tobacco</td><td>0.37263</td><td>North America</td><td>Consumer Defensive</td><td>Philip Morris International Inc</td><td>United States</td><td>US</td><td>PM</td></tr><tr><td>Aerospace & Defense</td><td>0.36191</td><td>North America</td><td>Industrials</td><td>GE Aerospace</td><td>United States</td><td>US</td><td>GE</td></tr><tr><td>Capital Markets</td><td>0.35674</td><td>North America</td><td>Financial Services</td><td>Goldman Sachs Group Inc</td><td>United States</td><td>US</td><td>GS</td></tr><tr><td>Software - Application</td><td>0.35268</td><td>North America</td><td>Technology</td><td>Intuit Inc</td><td>United States</td><td>US</td><td>INTU</td></tr><tr><td>Farm & Heavy Construction Machinery</td><td>0.34603</td><td>North America</td><td>Industrials</td><td>Caterpillar Inc</td><td>United States</td><td>US</td><td>CAT</td></tr><tr><td>Semiconductors</td><td>0.34521</td><td>North America</td><td>Technology</td><td>Qualcomm Incorporated</td><td>United States</td><td>US</td><td>QCOM</td></tr><tr><td>Semiconductors</td><td>0.3423</td><td>North America</td><td>Technology</td><td>Texas Instruments Incorporated</td><td>United States</td><td>US</td><td>TXN</td></tr><tr><td>Travel Services</td><td>0.33035</td><td>North America</td><td>Consumer Cyclical</td><td>Booking Holdings Inc</td><td>United States</td><td>US</td><td>BKNG</td></tr><tr><td>Credit Services</td><td>0.32928</td><td>North America</td><td>Financial Services</td><td>American Express Company</td><td>United States</td><td>US</td><td>AXP</td></tr><tr><td>Software - Infrastructure</td><td>0.32926</td><td>North America</td><td>Technology</td><td>Palantir Technologies Inc. Class A Common Stock</td><td>United States</td><td>US</td><td>PLTR</td></tr><tr><td>Telecom Services</td><td>0.32668</td><td>North America</td><td>Communication Services</td><td>Verizon Communications Inc</td><td>United States</td><td>US</td><td>VZ</td></tr><tr><td>Telecom Services</td><td>0.32109</td><td>North America</td><td>Communication Services</td><td>AT&T Inc</td><td>United States</td><td>US</td><td>T</td></tr><tr><td>Financial Data & Stock Exchanges</td><td>0.31249</td><td>North America</td><td>Financial Services</td><td>S&P Global Inc</td><td>United States</td><td>US</td><td>SPGI</td></tr><tr><td>Capital Markets</td><td>0.30733</td><td>North America</td><td>Financial Services</td><td>Morgan Stanley</td><td>United States</td><td>US</td><td>MS</td></tr><tr><td>Aerospace & Defense</td><td>0.30321</td><td>North America</td><td>Industrials</td><td>Raytheon Technologies Corp</td><td>United States</td><td>US</td><td>RTX</td></tr><tr><td>Asset Management</td><td>0.29948</td><td>Europe</td><td>Financial Services</td><td>BlackRock, Inc.</td><td>Italy</td><td>MI</td><td>1BLK</td></tr><tr><td>Drug Manufacturers - General</td><td>0.29547</td><td>North America</td><td>Healthcare</td><td>Pfizer Inc</td><td>United States</td><td>US</td><td>PFE</td></tr><tr><td>Utilities - Regulated Electric</td><td>0.29235</td><td>North America</td><td>Utilities</td><td>Nextera Energy Inc</td><td>United States</td><td>US</td><td>NEE</td></tr><tr><td>Conglomerates</td><td>0.29021</td><td>North America</td><td>Industrials</td><td>Honeywell International Inc</td><td>United States</td><td>US</td><td>HON</td></tr><tr><td>Diagnostics & Research</td><td>0.28922</td><td>North America</td><td>Healthcare</td><td>Danaher Corporation</td><td>United States</td><td>US</td><td>DHR</td></tr><tr><td>Telecom Services</td><td>0.2858</td><td>North America</td><td>Communication Services</td><td>Comcast Corp</td><td>United States</td><td>US</td><td>CMCSA</td></tr><tr><td>Insurance - Property & Casualty</td><td>0.27785</td><td>North America</td><td>Financial Services</td><td>Progressive Corp</td><td>United States</td><td>US</td><td>PGR</td></tr><tr><td>Drug Manufacturers - General</td><td>0.27721</td><td>North America</td><td>Healthcare</td><td>Amgen Inc</td><td>United States</td><td>US</td><td>AMGN</td></tr><tr><td>Home Improvement Retail</td><td>0.27679</td><td>North America</td><td>Consumer Cyclical</td><td>Lowe's Companies Inc</td><td>United States</td><td>US</td><td>LOW</td></tr><tr><td>Railroads</td><td>0.2716</td><td>North America</td><td>Industrials</td><td>Union Pacific Corporation</td><td>United States</td><td>US</td><td>UNP</td></tr><tr><td>Apparel Retail</td><td>0.27157</td><td>North America</td><td>Consumer Cyclical</td><td>The TJX Companies Inc</td><td>United States</td><td>US</td><td>TJX</td></tr><tr><td>Semiconductor Equipment & Materials</td><td>0.27065</td><td>North America</td><td>Technology</td><td>Applied Materials Inc</td><td>United States</td><td>US</td><td>AMAT</td></tr><tr><td>Specialty Industrial Machinery</td><td>0.26317</td><td>North America</td><td>Industrials</td><td>Eaton Corporation PLC</td><td>United States</td><td>US</td><td>ETN</td></tr><tr><td>Banks - Diversified</td><td>0.26182</td><td>North America</td><td>Financial Services</td><td>Citigroup Inc</td><td>United States</td><td>US</td><td>C</td></tr><tr><td>Medical Devices</td><td>0.26171</td><td>North America</td><td>Healthcare</td><td>Boston Scientific Corp</td><td>United States</td><td>US</td><td>BSX</td></tr><tr><td>Aerospace & Defense</td><td>0.26142</td><td>North America</td><td>Industrials</td><td>The Boeing Company</td><td>United States</td><td>US</td><td>BA</td></tr><tr><td>Software - Application</td><td>0.25315</td><td>North America</td><td>Technology</td><td>Uber Technologies Inc</td><td>United States</td><td>US</td><td>UBER</td></tr><tr><td>Medical Devices</td><td>0.24805</td><td>North America</td><td>Healthcare</td><td>Stryker Corporation</td><td>United States</td><td>US</td><td>SYK</td></tr><tr><td>Asset Management</td><td>0.24734</td><td>North America</td><td>Financial Services</td><td>Blackstone Group Inc</td><td>United States</td><td>US</td><td>BX</td></tr><tr><td>Oil & Gas E&P</td><td>0.24494</td><td>North America</td><td>Energy</td><td>ConocoPhillips</td><td>United States</td><td>US</td><td>COP</td></tr><tr><td>Software - Infrastructure</td><td>0.24185</td><td>North America</td><td>Technology</td><td>Palo Alto Networks Inc</td><td>United States</td><td>US</td><td>PANW</td></tr><tr><td>Software - Application</td><td>0.23554</td><td>North America</td><td>Technology</td><td>Automatic Data Processing Inc</td><td>United States</td><td>US</td><td>ADP</td></tr><tr><td>Information Technology Services</td><td>0.23235</td><td>North America</td><td>Technology</td><td>Fiserv, Inc.</td><td>United States</td><td>US</td><td>FI</td></tr><tr><td>Drug Manufacturers - General</td><td>0.22842</td><td>North America</td><td>Healthcare</td><td>Bristol-Myers Squibb Company</td><td>United States</td><td>US</td><td>BMY</td></tr><tr><td>Drug Manufacturers - General</td><td>0.22829</td><td>North America</td><td>Healthcare</td><td>Gilead Sciences Inc</td><td>United States</td><td>US</td><td>GILD</td></tr><tr><td>Capital Markets</td><td>0.21821</td><td>North America</td><td>Financial Services</td><td>Charles Schwab Corp</td><td>United States</td><td>US</td><td>SCHW</td></tr><tr><td>Farm & Heavy Construction Machinery</td><td>0.21476</td><td>North America</td><td>Industrials</td><td>Deere & Company</td><td>United States</td><td>US</td><td>DE</td></tr><tr><td>Telecom Services</td><td>0.21195</td><td>North America</td><td>Communication Services</td><td>T-Mobile US Inc</td><td>United States</td><td>US</td><td>TMUS</td></tr><tr><td>Semiconductors</td><td>0.21113</td><td>North America</td><td>Technology</td><td>Analog Devices Inc</td><td>United States</td><td>US</td><td>ADI</td></tr><tr><td>Insurance Brokers</td><td>0.20497</td><td>North America</td><td>Financial Services</td><td>Marsh & McLennan Companies Inc</td><td>United States</td><td>US</td><td>MMC</td></tr><tr><td>Biotechnology</td><td>0.20494</td><td>North America</td><td>Healthcare</td><td>Vertex Pharmaceuticals Inc</td><td>United States</td><td>US</td><td>VRTX</td></tr><tr><td>Medical Devices</td><td>0.2039</td><td>North America</td><td>Healthcare</td><td>Medtronic PLC</td><td>United States</td><td>US</td><td>MDT</td></tr><tr><td>Insurance - Property & Casualty</td><td>0.20212</td><td>North America</td><td>Financial Services</td><td>Chubb Ltd</td><td>United States</td><td>US</td><td>CB</td></tr><tr><td>Aerospace & Defense</td><td>0.20079</td><td>North America</td><td>Industrials</td><td>Lockheed Martin Corporation</td><td>United States</td><td>US</td><td>LMT</td></tr><tr><td>Asset Management</td><td>0.20068</td><td>North America</td><td>Financial Services</td><td>KKR & Co LP</td><td>United States</td><td>US</td><td>KKR</td></tr><tr><td>Restaurants</td><td>0.19872</td><td>North America</td><td>Consumer Cyclical</td><td>Starbucks Corporation</td><td>United States</td><td>US</td><td>SBUX</td></tr><tr><td>Semiconductors</td><td>0.19301</td><td>North America</td><td>Technology</td><td>Micron Technology Inc</td><td>United States</td><td>US</td><td>MU</td></tr><tr><td>REIT - Industrial</td><td>0.18908</td><td>North America</td><td>Real Estate</td><td>Prologis Inc</td><td>United States</td><td>US</td><td>PLD</td></tr><tr><td>Utilities - Renewable</td><td>0.18666</td><td>North America</td><td>Utilities</td><td>GE Vernova LLC</td><td>United States</td><td>US</td><td>GEV</td></tr><tr><td>Semiconductor Equipment & Materials</td><td>0.18523</td><td>North America</td><td>Technology</td><td>Lam Research Corp</td><td>United States</td><td>US</td><td>LRCX</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Dividend-Yield Factor</th><th>Price/Sales</th><th>Price/Cash Flow</th><th>Historical Earnings Growth</th><th>Book-Value Growth</th><th>Long-Term Projected Earnings Growth</th><th>Price/Book</th><th>Price/Prospective Earnings</th><th>Name</th><th>Sales Growth</th><th>Cash-Flow Growth</th></tr></thead><tbody><tr><td>1.33172</td><td>3.08862</td><td>16.43573</td><td>None</td><td>None</td><td>None</td><td>4.6186</td><td>22.73484</td><td>Valuations_Rates_Portfolio</td><td>None</td><td>None</td></tr><tr><td>1.40624</td><td>3.12799</td><td>16.23697</td><td>None</td><td>None</td><td>None</td><td>4.79142</td><td>22.72161</td><td>Valuations_Rates_To_Category</td><td>None</td><td>None</td></tr><tr><td>None</td><td>None</td><td>None</td><td>6.40091</td><td>6.88273</td><td>10.75225</td><td>None</td><td>None</td><td>Growth_Rates_Portfolio</td><td>8.83536</td><td>9.16302</td></tr><tr><td>None</td><td>None</td><td>None</td><td>12.20742</td><td>8.35538</td><td>10.67707</td><td>None</td><td>None</td><td>Growth_Rates_To_Category</td><td>9.89351</td><td>13.25498</td></tr></tbody></table></div><div class='nested-content'><dl><dt>Ratio:</dt><dd>4</dd><br><dt>Category_Benchmark:</dt><dd>S&P 500 TR USD</dd><br><dt>Sustainability_Ratio:</dt><dd>3</dd><br></dl></div><div class='nested-content'><dl><dt>1y_Volatility:</dt><dd>9.83</dd><br><dt>3y_Volatility:</dt><dd>17.38</dd><br><dt>3y_ExpReturn:</dt><dd>0</dd><br><dt>3y_SharpRatio:</dt><dd>0.48</dd><br><dt>Returns_YTD:</dt><dd>26.79</dd><br><dt>Returns_1Y:</dt><dd>26.47</dd><br><dt>Returns_3Y:</dt><dd>9.22</dd><br><dt>Returns_5Y:</dt><dd>14.74</dd><br><dt>Returns_10Y:</dt><dd>13.02</dd><br></dl></div></div></body></html>

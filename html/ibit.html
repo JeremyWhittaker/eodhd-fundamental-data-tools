@@ -1,0 +1,251 @@
+<html><head>
+    <style>
+        /* Basic Styles */
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+            width: 100%;
+        }
+        dl {
+            margin: 0 0 10px 0;
+            padding: 0;
+        }
+        dt, dd {
+            display: inline-block;
+            margin: 0;
+            padding: 2px;
+            vertical-align: top;
+        }
+        dt {
+            font-weight: bold;
+        }
+        dd {
+            margin-left: 5px;
+        }
+
+        /* Main Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active, .tab:hover {
+            background-color: #ddd;
+        }
+        .content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #fff;
+            margin-top: -1px;
+        }
+        .content.active {
+            display: block;
+        }
+
+        /* Nested Tabs (Financials, ETF, etc.) */
+        .nested-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-top: 20px;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .nested-tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #e6e6e6;
+            margin-right: 5px;
+            font-size: 0.9em;
+            border-radius: 5px 5px 0 0;
+        }
+        .nested-tab.active, .nested-tab:hover {
+            background-color: #ccc;
+        }
+        .nested-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #f9f9f9;
+            margin-top: -1px;
+        }
+        .nested-content.active {
+            display: block;
+        }
+
+        /* Nested Tabs Second Level (Quarterly and Yearly) */
+        .nested-tabs-second-level {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-top: 10px;
+            margin-bottom: 1em;
+            flex-wrap: wrap;
+        }
+        .nested-tab-second-level {
+            padding: 6px 12px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            background-color: #d9d9d9;
+            margin-right: 5px;
+            font-size: 0.8em;
+            border-radius: 5px 5px 0 0;
+        }
+        .nested-tab-second-level.active, .nested-tab-second-level:hover {
+            background-color: #b3b3b3;
+        }
+        .nested-content-second-level {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: #f0f0f0;
+            margin-top: -1px;
+        }
+        .nested-content-second-level.active {
+            display: block;
+        }
+
+        /* Dropdown Content */
+        .dropdown-content {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .dropdown-content.active {
+            display: block;
+        }
+
+        /* Headings */
+        h4 {
+            margin-bottom: 0.3em;
+            margin-top: 1em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Select Dropdown */
+        select {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        /* Financial Dropdowns */
+        .financial-dropdown {
+            margin-bottom: 20px;
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupTabs(tabSelector, contentSelector) {
+                const tabs = document.querySelectorAll(tabSelector);
+                const contents = document.querySelectorAll(contentSelector);
+
+                tabs.forEach((tab, index) => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+                        tab.classList.add('active');
+                        contents[index].classList.add('active');
+                    });
+                });
+
+                if (tabs.length > 0) {
+                    tabs[0].classList.add('active');
+                    contents[0].classList.add('active');
+                }
+            }
+
+            function setupNestedTabs(tabSelector, contentSelector) {
+                const tabs = document.querySelectorAll(tabSelector);
+                const contents = document.querySelectorAll(contentSelector);
+
+                tabs.forEach((tab, index) => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+                        tab.classList.add('active');
+                        contents[index].classList.add('active');
+                    });
+                });
+
+                if (tabs.length > 0) {
+                    tabs[0].classList.add('active');
+                    contents[0].classList.add('active');
+                }
+            }
+
+            function setupDropdown(dropdownId, contentPrefix) {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) {
+                    return;
+                }
+
+                dropdown.addEventListener('change', function () {
+                    const selectedValue = this.value;
+                    const allContents = document.querySelectorAll(`.dropdown-content`);
+                    allContents.forEach(content => {
+                        if (content.id === `${contentPrefix}_${selectedValue}`) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            setupTabs('.tab', '.content');
+            setupTabs('.nested-tab', '.nested-content');
+            setupNestedTabs('.nested-tab-second-level', '.nested-content-second-level');
+
+            const financialSections = ['balance_sheet', 'cash_flow', 'income_statement'];
+            financialSections.forEach(section => {
+                const quarterlyDropdownId = `${section}_quarterly_dropdown`;
+                const yearlyDropdownId = `${section}_yearly_dropdown`;
+                setupDropdown(quarterlyDropdownId, `${section}_quarterly`);
+                setupDropdown(yearlyDropdownId, `${section}_yearly`);
+            });
+
+            setupDropdown('earnings-dropdown', 'earnings');
+        });
+    </script>
+    </head><body><div class="tabs"><div class="tab">General</div><div class="tab">Technicals</div><div class="tab">ETF_Data</div></div><div class='content'><dl><dt>Code:</dt><dd>IBIT</dd><br><dt>Type:</dt><dd>ETF</dd><br><dt>Name:</dt><dd>iShares Bitcoin Trust</dd><br><dt>Exchange:</dt><dd>NASDAQ</dd><br><dt>CurrencyCode:</dt><dd>USD</dd><br><dt>CurrencyName:</dt><dd>US Dollar</dd><br><dt>CurrencySymbol:</dt><dd>$</dd><br><dt>CountryName:</dt><dd>USA</dd><br><dt>CountryISO:</dt><dd>US</dd><br><dt>OpenFigi:</dt><dd>BBG01KYQ6PV3</dd><br><dt>Description:</dt><dd>The shares are intended to constitute a simple means of making an investment similar to an investment in bitcoin rather than by acquiring, holding and trading bitcoin directly on a peer-to-peer or other basis or via a digital asset exchange.</dd><br><dt>Category:</dt><dd>Digital Assets</dd><br><dt>UpdatedAt:</dt><dd>2024-12-30</dd><br></dl></div><div class='content'><dl><dt>Beta:</dt><dd>0</dd><br><dt>52WeekHigh:</dt><dd>61.75</dd><br><dt>52WeekLow:</dt><dd>22.02</dd><br><dt>50DayMA:</dt><dd>49.7034</dd><br><dt>200DayMA:</dt><dd>39.5461</dd><br></dl></div><div class='content'><div class="nested-tabs"><div class="nested-tab">Main</div><div class="nested-tab">Asset Allocation</div><div class="nested-tab">World Regions</div><div class="nested-tab">Sector Weights</div><div class="nested-tab">Fixed Income</div><div class="nested-tab">Holdings Count</div><div class="nested-tab">Top 10 Holdings</div><div class="nested-tab">All Holdings</div><div class="nested-tab">Valuations & Growth</div><div class="nested-tab">MorningStar</div><div class="nested-tab">Performance</div></div><div class='nested-content'><dl><dt>ISIN:</dt><dd>US46438F1012</dd><br><dt>Company_Name:</dt><dd>iShares</dd><br><dt>Company_URL:</dt><dd>None</dd><br><dt>ETF_URL:</dt><dd>None</dd><br><dt>Domicile:</dt><dd>None</dd><br><dt>Index_Name:</dt><dd>None</dd><br><dt>Yield:</dt><dd>None</dd><br><dt>Dividend_Paying_Frequency:</dt><dd>None</dd><br><dt>Inception_Date:</dt><dd>2024-01-05</dd><br><dt>Max_Annual_Mgmt_Charge:</dt><dd>None</dd><br><dt>Ongoing_Charge:</dt><dd>None</dd><br><dt>Date_Ongoing_Charge:</dt><dd>None</dd><br><dt>NetExpenseRatio:</dt><dd>0.00120</dd><br><dt>AnnualHoldingsTurnover:</dt><dd>0</dd><br><dt>TotalAssets:</dt><dd>52,068,254,492</dd><br><dt>Average_Mkt_Cap_Mil:</dt><dd>No Data</dd><br></dl></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Name</th><th>Net_Assets_%</th><th>Long_%</th><th>Short_%</th></tr></thead><tbody><tr><td>Cash</td><td>-0.0029</td><td>0.35099</td><td>0.35389</td></tr><tr><td>NotClassified</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Stock non-US</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Other</td><td>100.00289</td><td>100.00289</td><td>0</td></tr><tr><td>Stock US</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Bond</td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Equity_%</th><th>Name</th><th>Relative_to_Category</th></tr></thead><tbody><tr><td>0</td><td>North America</td><td>81.641</td></tr><tr><td>0</td><td>United Kingdom</td><td>0.3005</td></tr><tr><td>0</td><td>Europe Developed</td><td>2.033</td></tr><tr><td>0</td><td>Europe Emerging</td><td>0</td></tr><tr><td>0</td><td>Africa/Middle East</td><td>0.151</td></tr><tr><td>0</td><td>Japan</td><td>3.565</td></tr><tr><td>0</td><td>Australasia</td><td>3.91</td></tr><tr><td>0</td><td>Asia Developed</td><td>3.879</td></tr><tr><td>0</td><td>Asia Emerging</td><td>2.374</td></tr><tr><td>0</td><td>Latin America</td><td>2.145</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Equity_%</th><th>Name</th><th>Relative_to_Category</th></tr></thead><tbody><tr><td>0</td><td>Basic Materials</td><td>0.08071</td></tr><tr><td>0</td><td>Consumer Cyclicals</td><td>3.15735</td></tr><tr><td>0</td><td>Financial Services</td><td>60.49259</td></tr><tr><td>0</td><td>Real Estate</td><td>0.03487</td></tr><tr><td>0</td><td>Communication Services</td><td>3.44668</td></tr><tr><td>0</td><td>Energy</td><td>0.09785</td></tr><tr><td>0</td><td>Industrials</td><td>1.75059</td></tr><tr><td>0</td><td>Technology</td><td>30.33105</td></tr><tr><td>0</td><td>Consumer Defensive</td><td>0.29087</td></tr><tr><td>0</td><td>Healthcare</td><td>0.183</td></tr><tr><td>0</td><td>Utilities</td><td>0.13445</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Fund_%</th><th>Name</th><th>Relative_to_Category</th></tr></thead><tbody><tr><td>0</td><td>EffectiveDuration</td><td>0</td></tr><tr><td>0</td><td>ModifiedDuration</td><td>0</td></tr><tr><td>0</td><td>EffectiveMaturity</td><td>0</td></tr><tr><td>0</td><td>CreditQuality</td><td>0</td></tr><tr><td>0</td><td>Coupon</td><td>3.54207</td></tr><tr><td>0</td><td>Price</td><td>0</td></tr><tr><td>0</td><td>YieldToMaturity</td><td>0</td></tr></tbody></table></div><div class='nested-content'><dl><dt>Holdings_Count:</dt><dd>1</dd><br></dl></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Code</th><th>Region</th><th>Sector</th><th>Exchange</th><th>Assets_%</th><th>Industry</th><th>Country</th><th>Name</th></tr></thead><tbody><tr><td>BTC</td><td>North America</td><td></td><td>US</td><td>99.99615</td><td></td><td>United States</td><td>Grayscale Bitcoin Mini Trust (BTC)</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Code</th><th>Region</th><th>Sector</th><th>Exchange</th><th>Assets_%</th><th>Industry</th><th>Country</th><th>Name</th></tr></thead><tbody><tr><td>BTC</td><td>North America</td><td></td><td>US</td><td>99.99615</td><td></td><td>United States</td><td>Grayscale Bitcoin Mini Trust (BTC)</td></tr></tbody></table></div><div class='nested-content'><table border='1' style='width: 100%; text-align: left; border-collapse: collapse;'><thead><tr><th>Sales Growth</th><th>Cash-Flow Growth</th><th>Book-Value Growth</th><th>Price/Cash Flow</th><th>Price/Prospective Earnings</th><th>Price/Book</th><th>Historical Earnings Growth</th><th>Long-Term Projected Earnings Growth</th><th>Name</th><th>Price/Sales</th><th>Dividend-Yield Factor</th></tr></thead><tbody><tr><td>None</td><td>None</td><td>None</td><td></td><td></td><td></td><td>None</td><td>None</td><td>Valuations_Rates_Portfolio</td><td></td><td></td></tr><tr><td>None</td><td>None</td><td>None</td><td>10.87153</td><td>25.21627</td><td>2.62236</td><td>None</td><td>None</td><td>Valuations_Rates_To_Category</td><td>3.71688</td><td>0.49048</td></tr><tr><td></td><td></td><td></td><td>None</td><td>None</td><td>None</td><td></td><td></td><td>Growth_Rates_Portfolio</td><td>None</td><td>None</td></tr><tr><td>1.58043</td><td>-12.55006</td><td>2.72119</td><td>None</td><td>None</td><td>None</td><td>5.19936</td><td>11.80994</td><td>Growth_Rates_To_Category</td><td>None</td><td>None</td></tr></tbody></table></div><div class='nested-content'><dl><dt>Ratio:</dt><dd>None</dd><br><dt>Category_Benchmark:</dt><dd>None</dd><br><dt>Sustainability_Ratio:</dt><dd>None</dd><br></dl></div><div class='nested-content'><dl><dt>1y_Volatility:</dt><dd>0</dd><br><dt>3y_Volatility:</dt><dd>0</dd><br><dt>3y_ExpReturn:</dt><dd>0</dd><br><dt>3y_SharpRatio:</dt><dd>0</dd><br><dt>Returns_YTD:</dt><dd>None</dd><br><dt>Returns_1Y:</dt><dd>None</dd><br><dt>Returns_3Y:</dt><dd>None</dd><br><dt>Returns_5Y:</dt><dd>None</dd><br><dt>Returns_10Y:</dt><dd>None</dd><br></dl></div></div></body></html>
