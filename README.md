@@ -1,2 +1,101 @@
-# eodhd-fundamental-data-tools
-This repository provides a set of Python scripts to simplify fetching and processing fundamental stock market data using the [EODHD API](https://eodhistoricaldata.com/). 
+# EODHD Fundamentals Helper
+
+A Python-based toolkit for interacting with the EODHD API to fetch, organize, and analyze fundamental financial data. This repository includes utilities to retrieve exchange symbols, download fundamental data, and generate structured outputs for analysis or presentation.
+
+## Features
+
+- **Fetch Fundamental Data**: Download and save company fundamental data using EODHD's API.
+- **Exchange Symbol Management**: Retrieve and manage symbols for different exchanges.
+- **Generate HTML Reports**: Convert downloaded data into readable and interactive HTML reports.
+- **Automate Workflows**: Scripts are designed for seamless integration into larger automation pipelines.
+
+## Prerequisites
+
+1. Python 3.8 or higher.
+2. A valid EODHD API key.
+3. Install required Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Add your EODHD API key to a `.env` file:
+
+```
+EODHD_API_KEY=your_api_key_here
+```
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/eodhd-fundamentals-helper.git
+cd eodhd-fundamentals-helper
+```
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Set up the directory structure for data:
+
+```bash
+mkdir -p data/exchanges
+mkdir -p data/fundamental_data
+```
+
+## Usage
+
+### Fetch Symbols for Exchanges
+
+```bash
+python get_symbols_from_exchange.py
+```
+
+This script retrieves symbols for all exchanges and saves them as JSON files in the `data/exchanges` directory.
+
+### List Unique Exchanges
+
+```bash
+python get_unique_exchanges.py --country US
+```
+
+Lists all unique exchanges for the specified country code.
+
+### Fetch Fundamental Data
+
+```bash
+python get_fundamental_data.py --country US --exchange NYSE --days 7
+```
+
+This command fetches fundamental data for symbols from the NYSE and saves them in `data/fundamental_data`.
+
+### Generate HTML Reports
+
+```bash
+python generate_html.py --rss data/fundamental_data/aapl.us.json
+```
+
+Converts the JSON data of a specific company (e.g., `aapl.us.json`) into an interactive HTML report.
+
+## File Overview
+
+- **`get_symbols_from_exchange.py`**: Retrieves and saves exchange symbols.
+- **`get_unique_exchanges.py`**: Lists unique exchanges for a specified country.
+- **`get_fundamental_data.py`**: Downloads fundamental data for symbols.
+- **`generate_html.py`**: Generates HTML reports from fundamental data.
+
+## Contribution
+
+Contributions are welcome! Please submit a pull request or raise an issue for any enhancements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Acknowledgments
+
+Special thanks to [EODHD](https://eodhd.com) for providing the API for financial data.
