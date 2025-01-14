@@ -23,7 +23,7 @@ In order to create a quantitative investment strategy based on fundamental data,
 Clone this repository:
 
 ```bash
-git clone https://github.com/yourusername/stock-market-data-fetcher.git
+git clone https://github.com/JeremyWhittaker/stock-market-data-fetcher.git
 cd stock-market-data-fetcher
 ```
 
